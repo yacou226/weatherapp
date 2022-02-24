@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- tailwind css -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="icon" href="<%= BASE_URL %>favicon.ico">
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/svg.js/3.1.2/svg.min.js" integrity="sha512-I+rKw3hArzZIHzrkdELbKqrXfkSvw/h0lW/GgB8FThaBVz2e5ZUlSW8kY8v3q6wq37eybIwyufkEZxe4qSlGcg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>    <title>Weather app</title>
+</head>
+
+<body>
+    <div id="app" class="">
+
+        <h3 class="text-center font-bold text-xl p-4 ">Api weather</h3>
+        <!-- search city -->
+        <div class="mb-8 text-center flex justify-center items-center">
+            <!-- input -->
+            <div class="flex justify-center">
+                <input v-model="city" class="border bg-gray-100 rounded px-2 py-2" type="text" name="search" id=""
+                    placeholder="Entrez une ville">
+                <button v-on:click="fetchMovies(city)" class="border border-lg-none bg-red-100 rounded px-1 py-2 "
+                    type="submit">Recherche</button>
+            </div>
+        </div>
+        <div class="     flex justify-center items-aroud  ">
+            <div v-fo class="bg-lime-400 m-4 text-center hover:cursor-pointed border-double  w-48 h-32 rounded text-black flex justify-center items-center  ">
+                <span> Pays : {{syse.country}}</span>
+                </span>
+            </div>
+            <div class="bg-red-400 m-4  w-48 h-32 rounded text-black flex justify-center items-center  ">
+                <svg class="w-12 h-12" xmlns="http://www.w3.org/2000/svg" className="h-2 w-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                <span> Ville: {{films.name}} </span>
+                </span>
+            </div>
+            <div  class="bg-pink-400 m-4  w-48 h-32 rounded text-black flex justify-center items-center  ">
+                <svg enter-class="w-12 h-12" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M5.5 16a3.5 3.5 0 01-.369-6.98 4 4 0 117.753-1.977A4.5 4.5 0 1113.5 16h-8z" />
+                  </svg>
+                <span> Humidité: {{mains.humidity}}%</span>
+                </span>
+            </div>
+
+            <div v-fo class="bg-yellow-400 m-4 text-center  w-48 h-32 rounded text-black flex justify-center items-center  ">
+                <span> Température ressenti : {{mains.feels_like}}°</span>
+                </span>
+            </div>
+            <i class="fas fa-chevron-right"></i>
+
+        </div>
+
+    </div>
+    <!-- vue cdn initialise -->
+    <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
+    <!-- axios cdn  -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.26.0/axios.min.js"
+        integrity="sha512-bPh3uwgU5qEMipS/VOmRqynnMXGGSRv+72H/N260MQeXZIK4PG48401Bsby9Nq5P5fz7hy5UGNmC/W1Z51h2GQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+</body>
+<script>
+
+    new Vue({
+        el: '#app',
+        data: {
+            city: "",
+            syse:[],
+            mains: [],
+            films: [],
+
+        },
+        // mounted() {
+        //         this.fetchMovies();
+        //     },
+
+        methods: {
+            async fetchMovies(city) {
+
+                fetch(` https://api.openweathermap.org/data/2.5/weather?q=${this.city}&appid=838aca67d5c6c12194f3097461c5ad15`)
+                    .then(async (responses) => {
+                        var body = await responses.text();
+                        var data = JSON.parse(body);
+                        this.films = data;
+                        this.syse=this.films.sys
+                        this.mains = this.films.main;
+
+                        console.log(this.films.main);
+                        console.log("=>>>sys",this.films.sys);
+                        console.log(">> api", this.films);
+                    });
+            },
+        }
+
+    })
+</script>
+
+</html>
